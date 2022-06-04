@@ -1,20 +1,13 @@
+import React from 'react';
+import { initializeApp } from 'firebase/app';
+import firebaseConfig from './config/firebase.config';
 
-import { initializeApp } from "firebase/app";
-import { firebaseConfig } from './config/firebase.config'
+initializeApp(firebaseConfig);
 
-initializeApp(firebaseConfig)
-
-interface Props {
-
-}
-
-const App: React.FunctionComponent<Props> = (props) => {
-
-  return (
-    <div className="App">
-      <h1>Habyts</h1>
-    </div>
-  )
-}
+const App: React.FunctionComponent = () => (
+  <div className="App">
+    <h1>Habyts</h1>
+  </div>
+);
 
 export default App;
