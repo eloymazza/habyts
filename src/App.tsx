@@ -15,12 +15,8 @@ const App: React.FunctionComponent = () => (
       <Route index element={<Home />} />
       <Route path="dashboard" element={<Dashboard />} />
       <Route path="*" element={<NotFound />} />
-      {/* <Route path="about" element={<About />} /> */}
     </Route>
   </Routes>
-  // <div className="App">
-  //   <h1>Habyts</h1>
-  // </div>
 );
 
 export default App;
