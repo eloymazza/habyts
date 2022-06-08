@@ -1,17 +1,26 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import Header from '../header/Header';
-import Footer from '../footer/Footer';
+import { Grid } from '@mui/material';
+import Header from '../Header/Header';
+import Footer from '../Footer/Footer';
 import classes from './Layout.module.css';
 
 const Layout: React.FunctionComponent = () => (
-  <div>
+  <>
     <Header />
-    <main className={classes.mainContent}>
-      <Outlet />
+    <main>
+      <Grid
+        container
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+        className={classes.mainContainer}
+      >
+        <Outlet />
+      </Grid>
     </main>
     <Footer />
-  </div>
+  </>
 );
 
 export default Layout;
