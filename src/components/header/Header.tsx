@@ -5,7 +5,7 @@ import classes from './Header.module.css';
 const Header: React.FunctionComponent = () => (
   <header className={classes.header}>
     <button type="button">
-      <Link to="/register">Register</Link>
+      <Link to="/signup">Sign Up</Link>
     </button>
     <button type="button">
       <Link to="/login">Login</Link>
