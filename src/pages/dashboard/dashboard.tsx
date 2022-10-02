@@ -1,7 +1,7 @@
 import React from 'react';
 import Habyts from '../../features/habyts/Habyts';
 
-const dashboard: React.FunctionComponent = () => (
+const dashboard: React.FC = () => (
   <>
     <h1>Dashboard</h1>
     <div>

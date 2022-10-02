@@ -1,4 +1,5 @@
-import habytsReducer, { Habyt, add } from './HabytsSlice';
+import { ENCOURAGE, Habyt } from './habyt.types';
+import habytsReducer, { add } from './HabytSlice';
 
 describe('counter reducer', () => {
   const initialState: Habyt[] = [];
@@ -9,7 +10,14 @@ describe('counter reducer', () => {
   });
 
   it('should handle add', () => {
-    const actual = habytsReducer(initialState, add({ id: '1', value: 'test' }));
+    const testHabyt: Habyt = {
+      id: '1',
+      name: 'test',
+      type: ENCOURAGE,
+      UoM: 'Kgs',
+      goal: undefined,
+    };
+    const actual = habytsReducer(initialState, add(testHabyt));
     expect(actual).toEqual({ value: 'test' });
   });
 });

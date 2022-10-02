@@ -11,7 +11,7 @@ import NotFound from './pages/notFound/notFound';
 
 initializeApp(firebaseConfig);
 
-const App: React.FunctionComponent = () => (
+const App: React.FC = () => (
   <Routes>
     <Route path="/" element={<Layout />}>
       <Route index element={<Home />} />

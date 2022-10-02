@@ -1,10 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../App/store';
-
-export interface Habyt {
-  id: string;
-  value: string;
-}
+import { Habyt } from './habyt.types';
 
 const initialState: Habyt[] = [];
 

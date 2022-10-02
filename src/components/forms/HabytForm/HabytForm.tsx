@@ -1,0 +1,150 @@
+import React, { useState } from 'react';
+import { Formik, Form, Field } from 'formik';
+import * as Yup from 'yup';
+import { useAppDispatch } from '../../../App/hooks';
+import { add } from '../../../features/habyts/HabytSlice';
+import {
+  AVG,
+  DAY,
+  DISCOURAGE,
+  ENCOURAGE,
+  Habyt,
+  MAX,
+  MIN,
+  MONTH,
+  SUM,
+  WEEK,
+  YEAR,
+  HabytType,
+  Goal,
+} from '../../../features/habyts/habyt.types';
+
+const KGS = 'Kgs';
+
+const ALLOWED_TYPES = [ENCOURAGE, DISCOURAGE];
+const ALLOWED_CALC_TYPES = [SUM, AVG, MAX, MIN];
+const ALLOWED_TIMELAPSES = [WEEK, MONTH, YEAR];
+const ALLOWED_AVG_BASIS = [DAY, WEEK, MONTH];
+
+const stringIsAllowed = (allowedValues: string[], value?: string): boolean =>
+  value ? allowedValues.includes(value) : false;
+
+const HabytSchema = Yup.object().shape({
+  name: Yup.string()
+    .min(1, 'Name is too short!')
+    .max(40, 'Name is too long!')
+    .required('The Field "Name" is Required'),
+  type: Yup.string()
+    .default(ENCOURAGE)
+    .test((value) => stringIsAllowed(ALLOWED_TYPES, value))
+    .required('Field type must be "encourage" or "discourage"'),
+  UoM: Yup.string().required('An unit of measure must be selected'),
+  goal: Yup.object({
+    target: Yup.number().required('Goal target cannot be empty'),
+    calcType: Yup.string().test((value) =>
+      stringIsAllowed(ALLOWED_CALC_TYPES, value)
+    ),
+    goalTimeLapse: Yup.string().test((value) =>
+      stringIsAllowed(ALLOWED_TIMELAPSES, value)
+    ),
+    goalTimeLapseSpan: Yup.number()
+      .required('Goal timelapse span cannot be empty')
+      .min(1),
+    avgBasis: Yup.string().test((value) =>
+      stringIsAllowed(ALLOWED_AVG_BASIS, value)
+    ),
+  })
+    .notRequired()
+    .default(undefined)
+    .nullable(true),
+});
+
+const HabytForm: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const [name, setName] = useState('');
+  const [type, setType] = useState<HabytType>(ENCOURAGE);
+  const [UoM, setUoM] = useState('');
+  const [showGoalControls, setShowGoalControls] = useState<boolean>(false);
+
+  const initialValues: Habyt = {
+    id: '',
+    name: '',
+    type: ENCOURAGE,
+    UoM: KGS,
+    goal: undefined,
+  };
+
+  const addHabyt = (s) => {
+    console.log(s);
+    console.log('add habyt', name);
+    // const formRef = useRef()
+    const newHabyt: Habyt = {
+      id: Date.now().toString(),
+      name,
+      type,
+      UoM,
+      goal: {} as Goal,
+    };
+    dispatch(add(newHabyt));
+  };
+
+  const handleNameChange = ({ target }: React.ChangeEvent<HTMLInputElement>) =>
+    setName(target.value);
+
+  const handleTypeChange = ({ target }: React.ChangeEvent<HTMLInputElement>) =>
+    setType(target.value as HabytType);
+
+  const handleUoMChange = ({ target }: React.ChangeEvent<HTMLSelectElement>) =>
+    setUoM(target.value);
+
+  const handleShowGoalChange = ({
+    target,
+  }: React.ChangeEvent<HTMLInputElement>) =>
+    setShowGoalControls(target.checked);
+
+  return (
+    <Formik
+      initialValues={initialValues}
+      validationSchema={HabytSchema}
+      onSubmit={addHabyt}
+      // innerRef={}
+    >
+      <Form>
+        <label>Name</label>
+        <br />
+        <Field type="text" name="name" />
+        {/* <br />
+        <label>Type</label>
+        <br />
+        <Field type="radio" name="type" value={ENCOURAGE} defaultChecked />
+        <Field type="radio" name="type" value={DISCOURAGE} />
+        <br />
+        <label>UoM</label>
+        <br /> */}
+        {/* <Field name="UoM" id="UoM">
+          <option value="Kms">Kms</option>
+          <option value="Kgs">Kgs</option>
+          <option value="Lts">L</option>
+          <option value="Mins">Mins</option>
+          <option value="Hours">Hours</option>
+          <option value="Days">Days</option>
+          <option value="Weeks">Weeks</option>
+        </select> */}
+        <br />
+        <label>Set Goal</label>
+        <Field type="checkbox" name="goal" />
+        <br />
+        {/* {showGoalControls && (
+          <div>
+            <label> Configure a Goal</label>
+            <br />
+            <label> Goal Target </label>
+            <input type="number" name="target" />
+          </div>
+        )} */}
+        <button type="submit">Submit</button>
+      </Form>
+    </Formik>
+  );
+};
+export default HabytForm;
