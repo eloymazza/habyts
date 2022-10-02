@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { useAppDispatch } from '../../../App/hooks';
@@ -15,8 +15,6 @@ import {
   SUM,
   WEEK,
   YEAR,
-  HabytType,
-  Goal,
 } from '../../../features/habyts/habyt.types';
 
 const KGS = 'Kgs';
@@ -61,10 +59,8 @@ const HabytSchema = Yup.object().shape({
 
 const HabytForm: React.FC = () => {
   const dispatch = useAppDispatch();
-  const [name, setName] = useState('');
-  const [type, setType] = useState<HabytType>(ENCOURAGE);
-  const [UoM, setUoM] = useState('');
-  const [showGoalControls, setShowGoalControls] = useState<boolean>(false);
+  // TODO: Add in v2
+  // const [showGoalControls, setShowGoalControls] = useState<boolean>(false);
 
   const initialValues: Habyt = {
     id: '',
@@ -74,54 +70,42 @@ const HabytForm: React.FC = () => {
     goal: undefined,
   };
 
-  const addHabyt = (s) => {
-    console.log(s);
-    console.log('add habyt', name);
-    // const formRef = useRef()
+  const addHabyt = ({ name, type, UoM }: Habyt) => {
     const newHabyt: Habyt = {
       id: Date.now().toString(),
       name,
       type,
       UoM,
-      goal: {} as Goal,
+      goal: undefined,
     };
     dispatch(add(newHabyt));
   };
 
-  const handleNameChange = ({ target }: React.ChangeEvent<HTMLInputElement>) =>
-    setName(target.value);
-
-  const handleTypeChange = ({ target }: React.ChangeEvent<HTMLInputElement>) =>
-    setType(target.value as HabytType);
-
-  const handleUoMChange = ({ target }: React.ChangeEvent<HTMLSelectElement>) =>
-    setUoM(target.value);
-
-  const handleShowGoalChange = ({
-    target,
-  }: React.ChangeEvent<HTMLInputElement>) =>
-    setShowGoalControls(target.checked);
+  // TODO: Feature to be added in V2
+  // const handleShowGoalChange = ({
+  //   target,
+  // }: React.ChangeEvent<HTMLInputElement>) =>
+  //   setShowGoalControls(target.checked);
 
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={HabytSchema}
       onSubmit={addHabyt}
-      // innerRef={}
     >
       <Form>
         <label>Name</label>
         <br />
         <Field type="text" name="name" />
-        {/* <br />
+        <br />
         <label>Type</label>
         <br />
-        <Field type="radio" name="type" value={ENCOURAGE} defaultChecked />
+        <Field type="radio" name="type" value={ENCOURAGE} />
         <Field type="radio" name="type" value={DISCOURAGE} />
         <br />
         <label>UoM</label>
-        <br /> */}
-        {/* <Field name="UoM" id="UoM">
+        <br />
+        <Field as="select" name="UoM" id="UoM">
           <option value="Kms">Kms</option>
           <option value="Kgs">Kgs</option>
           <option value="Lts">L</option>
@@ -129,17 +113,17 @@ const HabytForm: React.FC = () => {
           <option value="Hours">Hours</option>
           <option value="Days">Days</option>
           <option value="Weeks">Weeks</option>
-        </select> */}
+        </Field>
         <br />
         <label>Set Goal</label>
-        <Field type="checkbox" name="goal" />
+        {/* <Field type="checkbox" name="goal" onClick={handleShowGoalChange} /> */}
         <br />
         {/* {showGoalControls && (
           <div>
             <label> Configure a Goal</label>
             <br />
             <label> Goal Target </label>
-            <input type="number" name="target" />
+            <Field type="number" name="target" />
           </div>
         )} */}
         <button type="submit">Submit</button>
