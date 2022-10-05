@@ -1,11 +1,11 @@
 import React from 'react';
-import Habyts from '../../features/habyts/Habyts';
+import HabytList from '../../features/habyts/HabytList';
 
 const dashboard: React.FC = () => (
   <>
     <h1>Dashboard</h1>
     <div>
-      <Habyts />
+      <HabytList />
     </div>
   </>
 );
