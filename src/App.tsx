@@ -2,7 +2,7 @@ import React from 'react';
 import { initializeApp } from 'firebase/app';
 import { Routes, Route } from 'react-router-dom';
 import firebaseConfig from './config/firebase.config';
-import Layout from './components/layout/Layout';
+import Layout from './components/Layout/Layout';
 import Home from './pages/home/home';
 import Login from './pages/login/login';
 import SignUp from './pages/signUp/signUp';

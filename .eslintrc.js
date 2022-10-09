@@ -13,6 +13,10 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
+  globals: {
+    React: true,
+    JSX: true,
+  },
   plugins: ['react', '@typescript-eslint'],
   rules: {
     'jsx-a11y/label-has-associated-control': 'off',

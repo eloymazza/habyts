@@ -1,9 +1,10 @@
 import React from 'react';
 import { useAppSelector } from '../../App/hooks';
-import HabytForm from '../../components/forms/HabytForm/HabytForm';
+import HabytForm from '../../components/Forms/HabytForm/HabytForm';
 import HabytWidget from './HabytWidget';
 import { Habyt } from './habyt.types';
 import { selectHabyts } from './HabytSlice';
+import WidgetWrapper from '../../components/Widgets/WidgetWrapper/WidgetWrapper';
 
 export default () => {
   const habyts = useAppSelector(selectHabyts);
@@ -11,7 +12,9 @@ export default () => {
   return (
     <>
       {habyts.map((habyt: Habyt) => (
-        <HabytWidget key={habyt.id} data={habyt} />
+        <WidgetWrapper key={habyt.id}>
+          <HabytWidget data={habyt} />
+        </WidgetWrapper>
       ))}
       <HabytForm />
     </>
