@@ -1,5 +1,5 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import habytsReducer from '../features/habyts/HabytSlice';
+import habytsReducer from '../features/habyts/store/HabytSlice';
 
 export const store = configureStore({
   reducer: {

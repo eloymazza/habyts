@@ -1,5 +1,5 @@
 import React from 'react';
-import HabytList from '../../features/habyts/HabytList';
+import HabytList from '../../features/habyts/HabytList/HabytList';
 
 const dashboard: React.FC = () => (
   <>

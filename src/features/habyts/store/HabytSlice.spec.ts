@@ -1,4 +1,4 @@
-import { ENCOURAGE, Habyt } from './habyt.types';
+import { ENCOURAGE, Habyt } from '../types/habyt.types';
 import habytsReducer, { add } from './HabytSlice';
 
 describe('counter reducer', () => {
@@ -16,6 +16,8 @@ describe('counter reducer', () => {
       type: ENCOURAGE,
       UoM: 'Kgs',
       goal: undefined,
+      data: [],
+      creationDate: Date.now().toString(),
     };
     const actual = habytsReducer(initialState, add(testHabyt));
     expect(actual).toEqual({ value: 'test' });

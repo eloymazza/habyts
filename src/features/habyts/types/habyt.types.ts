@@ -31,10 +31,14 @@ export interface Goal {
   avgBasis?: AVGBasis;
 }
 
+export type SerieItem = Array<string | number>;
+
 export interface Habyt {
   id: string;
   name: string;
   type: HabytType;
   UoM: string;
   goal?: Goal;
+  data: SerieItem[];
+  creationDate: string;
 }

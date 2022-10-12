@@ -2,20 +2,29 @@ import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { useAppDispatch } from '../../../App/hooks';
-import { add } from '../../../features/habyts/HabytSlice';
+import { add } from '../../../features/habyts/store/HabytSlice';
 import {
   AVG,
   DAY,
   DISCOURAGE,
   ENCOURAGE,
   Habyt,
+  HabytType,
+  Goal,
   MAX,
   MIN,
   MONTH,
   SUM,
   WEEK,
   YEAR,
-} from '../../../features/habyts/habyt.types';
+} from '../../../features/habyts/types/habyt.types';
+
+export type HabytFormFields = {
+  name: string;
+  type: HabytType;
+  UoM: string;
+  goal?: Goal;
+};
 
 const KGS = 'Kgs';
 
@@ -62,21 +71,23 @@ const HabytForm: React.FC = () => {
   // TODO: Add in v2
   // const [showGoalControls, setShowGoalControls] = useState<boolean>(false);
 
-  const initialValues: Habyt = {
-    id: '',
+  const initialValues: HabytFormFields = {
     name: '',
     type: ENCOURAGE,
     UoM: KGS,
     goal: undefined,
   };
 
-  const addHabyt = ({ name, type, UoM }: Habyt) => {
+  const addHabyt = ({ name, type, UoM }: HabytFormFields) => {
+    const creationDate = Date.now().toString();
     const newHabyt: Habyt = {
-      id: Date.now().toString(),
+      id: creationDate,
       name,
       type,
       UoM,
       goal: undefined,
+      data: [],
+      creationDate,
     };
     dispatch(add(newHabyt));
   };

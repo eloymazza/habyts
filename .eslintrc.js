@@ -21,13 +21,14 @@ module.exports = {
   rules: {
     'jsx-a11y/label-has-associated-control': 'off',
     'react/function-component-definition': 'off',
-    'react/jsx-filename-extension': ['off', { extensions: ['.jsx', '.tsx'] }],
     'import/no-unresolved': 'off',
     'import/extensions': 'off',
     'max-len': 'off',
     'function-paren-newline': 'off',
     'no-confusing-arrow': 'off',
     'implicit-arrow-linebreak': 'off',
+    'object-curly-newline': 'off',
+    'react/jsx-filename-extension': ['off', { extensions: ['.jsx', '.tsx'] }],
     'comma-dangle': [
       2,
       {

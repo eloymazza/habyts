@@ -1,13 +1,20 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
+import { useAppDispatch } from '../../../App/hooks';
+import { update } from '../../../features/habyts/store/HabytSlice';
+import getValidHTMLDateInputFormat from '../../../utils/dateUtils';
 
 type FormFields = {
   value: number;
   date: string;
 };
 
-const defaultDate = new Date('2022-01-05').toISOString().substring(0, 10);
+export type NewHabytData = FormFields & {
+  id: string;
+};
+
+const defaultDate = getValidHTMLDateInputFormat(Date.now());
 
 const addHabytDataSchema = Yup.object().shape({
   value: Yup.number()
@@ -17,14 +24,21 @@ const addHabytDataSchema = Yup.object().shape({
   date: Yup.date().min(defaultDate).required('This field is required'),
 });
 
-export default () => {
+type Props = {
+  id: string;
+};
+
+const AddDataForm: React.FC<Props> = ({ id }) => {
+  const dispatch = useAppDispatch();
+
   const initialValues: FormFields = {
     value: 1,
     date: defaultDate,
   };
 
   const addHabytData = ({ value, date }: FormFields) => {
-    console.log(value, date);
+    const newData: NewHabytData = { id, value, date };
+    dispatch(update(newData));
   };
 
   return (
@@ -47,3 +61,5 @@ export default () => {
     </Formik>
   );
 };
+
+export default AddDataForm;
