@@ -12,9 +12,7 @@ export const habytSlice = createSlice({
     },
     update: (state, { payload }: PayloadAction<NewHabytData>) => {
       const { id, date, value } = payload;
-      console.log(id, date, value);
       const habyt = state.find((el) => el.id === id);
-      console.log(habyt);
       habyt?.data.push([date, value]);
     },
   },

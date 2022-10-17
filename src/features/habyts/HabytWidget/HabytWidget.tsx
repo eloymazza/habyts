@@ -37,15 +37,7 @@ export default ({ habyt }: Props) => {
     },
     series: [
       {
-        data,
-        // [
-        // [1641340800000, 3],
-        // [Date.UTC(2022, 0, 6), 2],
-        // [Date.UTC(2022, 0, 7), 1],
-        // [Date.UTC(2022, 0, 8), 0],
-        // [Date.UTC(2022, 0, 9), 0],
-        // [Date.UTC(2022, 0, 10), 0],
-        // ],
+        data: [...data],
       },
     ],
   };

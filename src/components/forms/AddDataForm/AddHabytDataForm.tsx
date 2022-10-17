@@ -10,8 +10,10 @@ type FormFields = {
   date: string;
 };
 
-export type NewHabytData = FormFields & {
+export type NewHabytData = {
   id: string;
+  value: number;
+  date: number;
 };
 
 const defaultDate = getValidHTMLDateInputFormat(Date.now());
@@ -37,7 +39,11 @@ const AddDataForm: React.FC<Props> = ({ id }) => {
   };
 
   const addHabytData = ({ value, date }: FormFields) => {
-    const newData: NewHabytData = { id, value, date };
+    const newData: NewHabytData = {
+      id,
+      value,
+      date: new Date(date).getTime(),
+    };
     dispatch(update(newData));
   };
 
