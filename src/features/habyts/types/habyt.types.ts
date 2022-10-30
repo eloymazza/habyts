@@ -31,7 +31,22 @@ export interface Goal {
   avgBasis?: AVGBasis;
 }
 
+export type MonthlyData = Record<string, number[]>;
+
+export type HistoricalData = Record<string, MonthlyData>;
+
 export type SerieItem = Array<string | number>;
+
+export type TimePeriod = {
+  name: string;
+  periodSpan: number;
+  type: 'RELATIVE' | 'FIXED' | 'CUSTOM';
+};
+
+export type HabytConfig = {
+  timePeriod: TimePeriod;
+  page: number;
+};
 
 export interface Habyt {
   id: string;
@@ -39,6 +54,7 @@ export interface Habyt {
   type: HabytType;
   UoM: string;
   goal?: Goal;
-  data: SerieItem[];
+  data: HistoricalData;
   creationDate: string;
+  config: HabytConfig;
 }

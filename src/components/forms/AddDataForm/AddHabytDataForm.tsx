@@ -3,7 +3,7 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { useAppDispatch } from '../../../App/hooks';
 import { update } from '../../../features/habyts/store/HabytSlice';
-import getValidHTMLDateInputFormat from '../../../utils/dateUtils';
+import { getValidHTMLDateInputFormat } from '../../../utils/dateUtils';
 
 type FormFields = {
   value: number;
@@ -13,7 +13,7 @@ type FormFields = {
 export type NewHabytData = {
   id: string;
   value: number;
-  date: number;
+  date: string;
 };
 
 const defaultDate = getValidHTMLDateInputFormat(Date.now());
@@ -23,7 +23,7 @@ const addHabytDataSchema = Yup.object().shape({
     .min(0, 'Only positive integers')
     .required('This field is required')
     .default(0),
-  date: Yup.date().min(defaultDate).required('This field is required'),
+  date: Yup.date().required('This field is required'),
 });
 
 type Props = {
@@ -42,7 +42,7 @@ const AddDataForm: React.FC<Props> = ({ id }) => {
     const newData: NewHabytData = {
       id,
       value,
-      date: new Date(date).getTime(),
+      date,
     };
     dispatch(update(newData));
   };

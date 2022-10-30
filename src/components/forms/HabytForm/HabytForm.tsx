@@ -17,6 +17,7 @@ import {
   SUM,
   WEEK,
   YEAR,
+  HabytConfig,
 } from '../../../features/habyts/types/habyt.types';
 
 export type HabytFormFields = {
@@ -24,6 +25,15 @@ export type HabytFormFields = {
   type: HabytType;
   UoM: string;
   goal?: Goal;
+};
+
+export const DEFAULT_CONFIG: HabytConfig = {
+  timePeriod: {
+    name: 'days',
+    type: 'RELATIVE',
+    periodSpan: 14,
+  },
+  page: 0,
 };
 
 const KGS = 'Kgs';
@@ -80,15 +90,18 @@ const HabytForm: React.FC = () => {
 
   const addHabyt = ({ name, type, UoM }: HabytFormFields) => {
     const creationDate = Date.now().toString();
+    const id = creationDate;
     const newHabyt: Habyt = {
-      id: creationDate,
+      id,
       name,
       type,
       UoM,
       goal: undefined,
-      data: [],
+      data: {},
       creationDate,
+      config: DEFAULT_CONFIG,
     };
+
     dispatch(add(newHabyt));
   };
 

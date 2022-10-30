@@ -29,6 +29,7 @@ module.exports = {
     'implicit-arrow-linebreak': 'off',
     'object-curly-newline': 'off',
     'react/jsx-filename-extension': ['off', { extensions: ['.jsx', '.tsx'] }],
+    'operator-linebreak': 'off',
     'comma-dangle': [
       2,
       {
