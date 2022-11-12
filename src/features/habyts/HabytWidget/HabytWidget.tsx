@@ -6,7 +6,7 @@ import { Habyt, HabytConfig, HistoricalData } from '../types/habyt.types';
 import {
   getDayNamesForPeriod,
   getDataFromPeriod,
-  getNextXDate,
+  getDateWithModificator,
 } from '../../../utils/dateUtils';
 
 export type TimePeriod = {
@@ -23,7 +23,10 @@ const DEFAULT_DATA = [0, 0, 0, 0, 0, 0, 0];
 
 export type ChartData = {
   categories: string[];
-  periodData: number[];
+  periodData: {
+    data: number[];
+    name: string;
+  };
 };
 
 const getRelativePeriodWidgetData = (
@@ -31,9 +34,9 @@ const getRelativePeriodWidgetData = (
   data: HistoricalData,
   page: number
 ) => {
-  const dateModificator = page * periodSpan;
+  const dateModificator = periodSpan * page;
 
-  const date = getNextXDate(new Date(), dateModificator);
+  const date = getDateWithModificator(new Date(), dateModificator);
 
   return {
     categories: getDayNamesForPeriod(date, periodSpan),
@@ -50,13 +53,14 @@ const getWidgetData = (
     case 'RELATIVE':
       return getRelativePeriodWidgetData(periodSpan, data, page);
     default:
-      return { categories: [''], periodData: [1] };
+      return { categories: [''], periodData: { data: [1], name: 'default' } };
   }
 };
 
 export default ({ habyt }: Props) => {
   const { name, type, UoM, data, config } = habyt;
   const { categories, periodData } = getWidgetData(data, config);
+  const { data: serieData, name: serieName } = periodData;
   const widgetConfig = {
     chart: {
       type: 'column',
@@ -82,7 +86,8 @@ export default ({ habyt }: Props) => {
     },
     series: [
       {
-        data: periodData || DEFAULT_DATA,
+        data: serieData || DEFAULT_DATA,
+        name: serieName,
       },
     ],
   };
