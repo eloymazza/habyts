@@ -81,10 +81,6 @@ export const getDataFromPeriod = (
       currentMonth = 0;
     }
 
-    const currentDate = new Date(currentYear, currentMonth + 1, 1);
-
-    periodName += `- ${getMonthName(currentDate)} ${currentYear}`;
-
     const remainingDays = periodSpan - periodData.length;
     const currentMonthData = data?.[currentYear]?.[currentMonth];
 

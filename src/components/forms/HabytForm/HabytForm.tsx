@@ -4,25 +4,21 @@ import * as Yup from 'yup';
 import { useAppDispatch } from '../../../App/hooks';
 import { add } from '../../../features/habyts/store/HabytSlice';
 import {
-  AVG,
-  DAY,
-  DISCOURAGE,
-  ENCOURAGE,
-  Habyt,
-  HabytType,
   Goal,
-  MAX,
-  MIN,
-  MONTH,
-  SUM,
-  WEEK,
-  YEAR,
+  Habyt,
   HabytConfig,
 } from '../../../features/habyts/types/habyt.types';
+import {
+  Calculations,
+  HabytTypes,
+  TimeLapses,
+  TimePeriodTypes,
+  UOMs,
+} from '../../../features/habyts/enums/habytEnums';
 
 export type HabytFormFields = {
   name: string;
-  type: HabytType;
+  type: HabytTypes;
   UoM: string;
   goal?: Goal;
 };
@@ -30,21 +26,30 @@ export type HabytFormFields = {
 export const DEFAULT_CONFIG: HabytConfig = {
   timePeriod: {
     name: 'days',
-    type: 'RELATIVE',
+    type: TimePeriodTypes.RELATIVE,
     periodSpan: 14,
   },
   page: 0,
 };
 
-const KGS = 'Kgs';
+const ALLOWED_TYPES = HabytTypes;
+const ALLOWED_CALC_TYPES = Calculations;
+const ALLOWED_GOAL_TIMELAPSES = {
+  week: TimeLapses.WEEK,
+  month: TimeLapses.MONTH,
+  year: TimeLapses.YEAR,
+};
 
-const ALLOWED_TYPES = [ENCOURAGE, DISCOURAGE];
-const ALLOWED_CALC_TYPES = [SUM, AVG, MAX, MIN];
-const ALLOWED_TIMELAPSES = [WEEK, MONTH, YEAR];
-const ALLOWED_AVG_BASIS = [DAY, WEEK, MONTH];
+const ALLOWED_GOAL_AVG_BASIS = {
+  day: TimeLapses.DAY,
+  week: TimeLapses.WEEK,
+  month: TimeLapses.MONTH,
+};
 
-const stringIsAllowed = (allowedValues: string[], value?: string): boolean =>
-  value ? allowedValues.includes(value) : false;
+const stringIsAllowed = (
+  allowedValues: Record<string, string>,
+  value?: string
+): boolean => (value ? Object.values(allowedValues).includes(value) : false);
 
 const HabytSchema = Yup.object().shape({
   name: Yup.string()
@@ -52,7 +57,7 @@ const HabytSchema = Yup.object().shape({
     .max(40, 'Name is too long!')
     .required('The Field "Name" is Required'),
   type: Yup.string()
-    .default(ENCOURAGE)
+    .default(HabytTypes.ENCOURAGE)
     .test((value) => stringIsAllowed(ALLOWED_TYPES, value))
     .required('Field type must be "encourage" or "discourage"'),
   UoM: Yup.string().required('An unit of measure must be selected'),
@@ -62,13 +67,13 @@ const HabytSchema = Yup.object().shape({
       stringIsAllowed(ALLOWED_CALC_TYPES, value)
     ),
     goalTimeLapse: Yup.string().test((value) =>
-      stringIsAllowed(ALLOWED_TIMELAPSES, value)
+      stringIsAllowed(ALLOWED_GOAL_TIMELAPSES, value)
     ),
     goalTimeLapseSpan: Yup.number()
       .required('Goal timelapse span cannot be empty')
       .min(1),
     avgBasis: Yup.string().test((value) =>
-      stringIsAllowed(ALLOWED_AVG_BASIS, value)
+      stringIsAllowed(ALLOWED_GOAL_AVG_BASIS, value)
     ),
   })
     .notRequired()
@@ -83,8 +88,8 @@ const HabytForm: React.FC = () => {
 
   const initialValues: HabytFormFields = {
     name: '',
-    type: ENCOURAGE,
-    UoM: KGS,
+    type: HabytTypes.ENCOURAGE,
+    UoM: UOMs.KGS,
     goal: undefined,
   };
 
@@ -124,8 +129,8 @@ const HabytForm: React.FC = () => {
         <br />
         <label>Type</label>
         <br />
-        <Field type="radio" name="type" value={ENCOURAGE} />
-        <Field type="radio" name="type" value={DISCOURAGE} />
+        <Field type="radio" name="type" value={HabytTypes.ENCOURAGE} />
+        <Field type="radio" name="type" value={HabytTypes.DISCOURAGE} />
         <br />
         <label>UoM</label>
         <br />

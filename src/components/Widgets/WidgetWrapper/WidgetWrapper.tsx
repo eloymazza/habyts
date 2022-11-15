@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { TimePeriod } from '../../../features/habyts/types/habyt.types';
+import { TimePeriodTypes } from '../../../features/habyts/enums/habytEnums';
+import { TimePeriods } from '../../../features/habyts/types/habyt.types';
 
 import AddDataForm from '../../Forms/AddDataForm/AddHabytDataForm';
 
@@ -8,9 +9,9 @@ type Props = {
   id: string;
 };
 
-// const TIME_PERIODS: TimePeriod = [}, 'week', '2 weeks', 'monthly', 'yearly', 'all'];
-const TIME_PERIODS: TimePeriod[] = [
-  { name: 'days', type: 'RELATIVE', periodSpan: 14 },
+const TIME_PERIODS: TimePeriods[] = [
+  { name: 'days', type: TimePeriodTypes.RELATIVE, periodSpan: 14 },
+  { name: 'month', type: TimePeriodTypes.FIXED },
 ];
 
 const WidgetWrapper: React.FC<Props> = ({ children, id }: Props) => {
@@ -41,6 +42,13 @@ const WidgetWrapper: React.FC<Props> = ({ children, id }: Props) => {
       {childWithParams}
       <button type="button" onClick={() => setShowForm(!showForm)}>
         Add Data
+      </button>
+      <button
+        type="button"
+        disabled={page < 1}
+        onClick={() => setPage((prevPage) => prevPage - 1)}
+      >
+        Prev
       </button>
       <button type="button" onClick={() => setPage((prevPage) => prevPage + 1)}>
         Next

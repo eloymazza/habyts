@@ -30,6 +30,9 @@ module.exports = {
     'object-curly-newline': 'off',
     'react/jsx-filename-extension': ['off', { extensions: ['.jsx', '.tsx'] }],
     'operator-linebreak': 'off',
+    'no-shadow': 'off',
+    '@typescript-eslint/no-shadow': ['error'],
+    '@typescript-eslint/no-unused-vars': ['error'],
     'comma-dangle': [
       2,
       {

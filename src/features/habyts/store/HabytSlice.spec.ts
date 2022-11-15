@@ -1,5 +1,6 @@
 import { DEFAULT_CONFIG } from '../../../components/Forms/HabytForm/HabytForm';
-import { ENCOURAGE, Habyt } from '../types/habyt.types';
+import { HabytTypes } from '../enums/habytEnums';
+import { Habyt } from '../types/habyt.types';
 import habytsReducer, { add } from './HabytSlice';
 
 const addExpectedResult = [
@@ -24,7 +25,7 @@ describe('counter reducer', () => {
     const testHabyt: Habyt = {
       id: '1',
       name: 'test',
-      type: ENCOURAGE,
+      type: HabytTypes.ENCOURAGE,
       UoM: 'Kgs',
       goal: undefined,
       data: {},

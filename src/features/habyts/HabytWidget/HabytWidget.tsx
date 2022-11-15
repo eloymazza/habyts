@@ -9,17 +9,11 @@ import {
   getDateWithModificator,
 } from '../../../utils/dateUtils';
 
-export type TimePeriod = {
-  name: string;
-  periodSpan: number;
-  type: 'RELATIVE' | 'FIXED' | 'CUSTOM';
-};
-
 export type Props = {
   habyt: Habyt;
 };
 
-const DEFAULT_DATA = [0, 0, 0, 0, 0, 0, 0];
+// const DEFAULT_DATA = [0, 0, 0, 0, 0, 0, 0];
 
 export type ChartData = {
   categories: string[];
@@ -48,10 +42,9 @@ const getWidgetData = (
   data: HistoricalData,
   { timePeriod, page }: HabytConfig
 ): ChartData => {
-  const { periodSpan, type } = timePeriod;
-  switch (type) {
+  switch (timePeriod.type) {
     case 'RELATIVE':
-      return getRelativePeriodWidgetData(periodSpan, data, page);
+      return getRelativePeriodWidgetData(timePeriod.periodSpan, data, page);
     default:
       return { categories: [''], periodData: { data: [1], name: 'default' } };
   }
@@ -86,7 +79,7 @@ export default ({ habyt }: Props) => {
     },
     series: [
       {
-        data: serieData || DEFAULT_DATA,
+        data: serieData,
         name: serieName,
       },
     ],
