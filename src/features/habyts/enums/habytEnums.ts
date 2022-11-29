@@ -27,3 +27,18 @@ export enum TimeLapses {
 export enum UOMs {
   KGS = 'kgs',
 }
+
+export enum PageActions {
+  PREV = -1,
+  NEXT = 1,
+}
+
+export enum TimePeriodNames {
+  DAYS = 'Days',
+  WEEKS = 'Weeks',
+  MONTHS = 'Months',
+  CURRENT_MONTH = 'Current Month',
+}
+
+export const DEFAULT_PERIOD_SPAN = 14;
+export const WEEKS_PERIOD_SPAN = 28;

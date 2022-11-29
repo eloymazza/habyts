@@ -1,56 +1,85 @@
 import React, { useState } from 'react';
-import { TimePeriodTypes } from '../../../features/habyts/enums/habytEnums';
-import { TimePeriods } from '../../../features/habyts/types/habyt.types';
+import { useAppDispatch } from '../../../App/hooks';
+import {
+  PageActions,
+  TimePeriodNames,
+  TimePeriodTypes,
+  WEEKS_PERIOD_SPAN,
+} from '../../../features/habyts/enums/habytEnums';
+import HabytWidget from '../../../features/habyts/HabytWidget/HabytWidget';
+import {
+  setPageById,
+  setTimePeriodById,
+} from '../../../features/habyts/store/HabytSlice';
+import { Habyt, TimePeriod } from '../../../features/habyts/types/habyt.types';
+import {
+  getCurrentMonth,
+  getCurrentYear,
+  getMonthDays,
+} from '../../../utils/dateUtils';
 
 import AddDataForm from '../../Forms/AddDataForm/AddHabytDataForm';
 
 type Props = {
-  children: JSX.Element;
-  id: string;
+  habyt: Habyt;
 };
 
-const TIME_PERIODS: TimePeriods[] = [
-  { name: 'days', type: TimePeriodTypes.RELATIVE, periodSpan: 14 },
-  { name: 'month', type: TimePeriodTypes.FIXED },
+export type TimePeriodOption = Pick<TimePeriod, 'name' | 'type'> & {
+  periodSpan: number;
+};
+
+const TIME_PERIODS: TimePeriodOption[] = [
+  {
+    name: TimePeriodNames.DAYS,
+    type: TimePeriodTypes.RELATIVE,
+    periodSpan: 14,
+  },
+  {
+    name: TimePeriodNames.WEEKS,
+    type: TimePeriodTypes.RELATIVE,
+    periodSpan: WEEKS_PERIOD_SPAN,
+  },
+  {
+    name: TimePeriodNames.CURRENT_MONTH,
+    type: TimePeriodTypes.FIXED,
+    periodSpan: getMonthDays(
+      getCurrentYear(new Date()),
+      getCurrentMonth(new Date())
+    ),
+  },
 ];
 
-const WidgetWrapper: React.FC<Props> = ({ children, id }: Props) => {
+const WidgetWrapper: React.FC<Props> = ({ habyt }: Props) => {
+  const dispatch = useAppDispatch();
+  const { config, id } = habyt;
+  const { page, timePeriod } = config;
+
   const [showForm, setShowForm] = useState<boolean>(false);
-  const [timePeriod, setTimePeriod] = useState(TIME_PERIODS[0]);
-  const [page, setPage] = useState<number>(0);
 
   const updateTimePeriod = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const tp =
       TIME_PERIODS.find((tps) => tps.name === event.target.value) ||
       TIME_PERIODS[0];
-    setTimePeriod(tp);
-  };
-
-  const childWithParams = {
-    ...children,
-    props: {
-      ...children.props,
-      habyt: {
-        ...children.props.habyt,
-        config: { timePeriod, page },
-      },
-    },
+    dispatch(setTimePeriodById({ id, timePeriod: tp }));
   };
 
   return (
     <>
-      {childWithParams}
+      <HabytWidget habyt={habyt} />
       <button type="button" onClick={() => setShowForm(!showForm)}>
         Add Data
       </button>
       <button
         type="button"
-        disabled={page < 1}
-        onClick={() => setPage((prevPage) => prevPage - 1)}
+        disabled={page === 1}
+        onClick={() => dispatch(setPageById({ id, value: PageActions.PREV }))}
       >
         Prev
       </button>
-      <button type="button" onClick={() => setPage((prevPage) => prevPage + 1)}>
+      <button
+        type="button"
+        onClick={() => dispatch(setPageById({ id, value: PageActions.NEXT }))}
+      >
         Next
       </button>
       {showForm && <AddDataForm id={id} />}

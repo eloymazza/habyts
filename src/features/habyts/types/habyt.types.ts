@@ -2,6 +2,7 @@ import {
   Calculations,
   HabytTypes,
   TimeLapses,
+  TimePeriodNames,
   TimePeriodTypes,
 } from '../enums/habytEnums';
 
@@ -23,30 +24,15 @@ export type HistoricalData = Record<string, MonthlyData>;
 export type SerieItem = Array<string | number>;
 
 export interface TimePeriod {
-  name: string;
+  name: TimePeriodNames;
+  type: TimePeriodTypes;
+  from: number;
+  to: number;
+  periodSpan: number;
 }
 
-export type RelativeTimePeriod = TimePeriod & {
-  type: TimePeriodTypes.RELATIVE;
-  periodSpan: number;
-};
-
-export type FixedTimePeriod = TimePeriod & {
-  type: TimePeriodTypes.FIXED;
-};
-
-export type CustomTimePeriod = TimePeriod & {
-  type: TimePeriodTypes.CUSTOM;
-  periodSpan: number;
-};
-
-export type TimePeriods =
-  | FixedTimePeriod
-  | RelativeTimePeriod
-  | CustomTimePeriod;
-
 export type HabytConfig = {
-  timePeriod: TimePeriods;
+  timePeriod: TimePeriod;
   page: number;
 };
 

@@ -10,11 +10,14 @@ import {
 } from '../../../features/habyts/types/habyt.types';
 import {
   Calculations,
+  DEFAULT_PERIOD_SPAN,
   HabytTypes,
   TimeLapses,
+  TimePeriodNames,
   TimePeriodTypes,
   UOMs,
 } from '../../../features/habyts/enums/habytEnums';
+import { getNextXDay } from '../../../utils/dateUtils';
 
 export type HabytFormFields = {
   name: string;
@@ -25,11 +28,13 @@ export type HabytFormFields = {
 
 export const DEFAULT_CONFIG: HabytConfig = {
   timePeriod: {
-    name: 'days',
+    name: TimePeriodNames.DAYS,
     type: TimePeriodTypes.RELATIVE,
-    periodSpan: 14,
+    from: new Date().getTime(),
+    to: getNextXDay(new Date(), DEFAULT_PERIOD_SPAN).getTime(),
+    periodSpan: DEFAULT_PERIOD_SPAN,
   },
-  page: 0,
+  page: 1,
 };
 
 const ALLOWED_TYPES = HabytTypes;

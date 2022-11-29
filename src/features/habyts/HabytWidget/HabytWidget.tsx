@@ -8,6 +8,7 @@ import {
   getDataFromPeriod,
   getDateWithModificator,
 } from '../../../utils/dateUtils';
+import { TimePeriodNames } from '../enums/habytEnums';
 
 export type Props = {
   habyt: Habyt;
@@ -28,10 +29,8 @@ const getRelativePeriodWidgetData = (
   data: HistoricalData,
   page: number
 ) => {
-  const dateModificator = periodSpan * page;
-
-  const date = getDateWithModificator(new Date(), dateModificator);
-
+  const dateModifier = periodSpan * (page - 1);
+  const date = getDateWithModificator(new Date(), dateModifier);
   return {
     categories: getDayNamesForPeriod(date, periodSpan),
     periodData: getDataFromPeriod(date, data, periodSpan),
@@ -44,6 +43,12 @@ const getWidgetData = (
 ): ChartData => {
   switch (timePeriod.type) {
     case 'RELATIVE':
+      // let period = 14;
+
+      if (timePeriod.name === TimePeriodNames.MONTHS) {
+        // period = getMonthDays();
+      }
+
       return getRelativePeriodWidgetData(timePeriod.periodSpan, data, page);
     default:
       return { categories: [''], periodData: { data: [1], name: 'default' } };

@@ -14,19 +14,23 @@ const getPastMonday = (date: Date) => {
 export const getMonthDays = (year: number, month: number) =>
   new Date(year, month, 0).getDate();
 
-const getNextDay = (date: Date) => new Date(date.setDate(date.getDate() + 1));
+export const getMonthStartDate = (year: number, month: number) =>
+  new Date(year, month, 1);
+
+export const getNextXDay = (date: Date, days: number = 1) =>
+  new Date(date.setDate(date.getDate() + days));
 
 const getNextMonth = (date: Date) =>
   date.getMonth() === 11
     ? new Date(date.getFullYear() + 1, 0, 1)
     : new Date(date.getFullYear(), date.getMonth() + 1, 1);
 
-const getCurrentYear = (date: Date) => date.getFullYear();
-const getCurrentMonth = (date: Date) => date.getMonth();
-const getDaysInAMonth = (year: number, month: number) =>
+export const getCurrentYear = (date: Date) => date.getFullYear();
+export const getCurrentMonth = (date: Date) => date.getMonth();
+export const getDaysInAMonth = (year: number, month: number) =>
   new Date(year, month, 0).getDate();
 
-export const getCurrentYearMonth = (date: Date) => [
+export const getCurrentYearMonthStrings = (date: Date) => [
   getCurrentYear(date).toString(),
   (getCurrentMonth(date) + 1).toString(),
 ];
@@ -47,7 +51,7 @@ export const getDataFromPeriod = (
   data: HistoricalData,
   periodSpan: number
 ) => {
-  const [year, month] = getCurrentYearMonth(date);
+  const [year, month] = getCurrentYearMonthStrings(date);
   let currentYear = +year;
   let currentMonth = +month;
   const startDay = date.getDate();
@@ -100,13 +104,12 @@ export const getDayNamesForPeriod = (
   locale?: string
 ) => {
   let currentDay = new Date(startDate);
-
   const dayNames = [];
   for (let i = 0; i < days; i += 1) {
     const dayName = getDayName(currentDay, locale);
     const dayNumber = currentDay.getDate();
     dayNames.push(`${dayName} ${dayNumber}`);
-    currentDay = getNextDay(currentDay);
+    currentDay = getNextXDay(currentDay);
   }
   return dayNames;
 };
@@ -127,7 +130,7 @@ export const getWeekDaysString = (date: Date, locale?: string) => {
     const weekDayName = getDayName(currentDay, locale);
     const weekDayNumber = currentDay.getDate();
     weekDays.push(`${weekDayName} ${weekDayNumber}`);
-    currentDay = getNextDay(currentDay);
+    currentDay = getNextXDay(currentDay);
   }
   return weekDays;
 };
